@@ -473,11 +473,7 @@ macro_rules! define_effect {
 
                         if e != Error::InterruptCancel && !out_data_ptr.is_null() {
                             let mut out_data = $crate::OutData::from_raw(out_data_ptr);
-                            if !out_data.has_return_msg() {
-                                out_data.set_error_msg(&format!("EffectMain returned error: {e:?}"));
-                            } else {
-                                out_data.set_out_flag($crate::OutFlags::DisplayErrorMessage, true);
-                            }
+                            out_data.set_error_msg_if_empty(&format!("EffectMain returned error: {e:?}"));
                         }
 
                         e as $crate::sys::PF_Err
